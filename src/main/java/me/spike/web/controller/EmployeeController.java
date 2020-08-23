@@ -62,12 +62,12 @@ public class EmployeeController {
     private ResponseEntity<CreateEmployeeResponse> onValidEmployee(Employee employee) {
         final Either<Error, Registration> maybeRegistration = service.register(employee);
         return maybeRegistration
-                .mapRight(this::onValidEmployee)
+                .mapRight(this::onRegistrationSuccess)
                 .mapLeft(this::onInvalidNewEmployee)
                 .reduce(response -> response);
     }
 
-    private ResponseEntity<CreateEmployeeResponse> onValidEmployee(Registration registration) {
+    private ResponseEntity<CreateEmployeeResponse> onRegistrationSuccess(Registration registration) {
         final CreateEmployeeResponse response = new CreateEmployeeResponse(registration);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
