@@ -1,0 +1,42 @@
+
+### Create valid employee
+POST localhost:8080/employee
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "departmentCode": "IT"
+}
+
+
+### Create invalid employee without name
+POST localhost:8080/employee
+Content-Type: application/json
+
+{
+  "name": "",
+  "departmentCode": "IT"
+}
+
+### Create invalid employee associated with non existant department
+POST localhost:8080/employee
+Content-Type: application/json
+
+{
+  "name": "",
+  "departmentCode": "unknown"
+}
+
+### Invalid search criteria - Does not allow you to fetch all employees
+GET localhost:8080/employees
+Accept: application/json
+
+### Find employees by department
+GET localhost:8080/employees?departmentCode=foo
+Accept: application/json
+
+### Find employees by department and name
+GET localhost:8080/employees?departmentCode=foo&name=bar
+Accept: application/json
+
+###
