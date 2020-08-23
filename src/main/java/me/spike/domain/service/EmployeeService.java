@@ -1,10 +1,10 @@
 package me.spike.domain.service;
 
-import lombok.NonNull;
 import me.spike.domain.model.Error;
 import me.spike.domain.model.*;
 import me.spike.persistence.DepartmentRepository;
 import me.spike.persistence.EmployeeRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class EmployeeService {
         this.departmentRepository = departmentRepository;
     }
 
-    public Either<Error, Registration> register(@NonNull Employee employee) {
+    public Either<Error, Registration> register(@NotNull Employee employee) {
         final Optional<Department> maybeDepartment = departmentRepository.find(employee.getDepartmentCode());
         return maybeDepartment
                 .map(department -> onValidDepartment(employee))
@@ -36,9 +36,7 @@ public class EmployeeService {
         return new Right<>(new Registration(newEmployeeId));
     }
 
-
-    public List<Employee> search(@NonNull EmployeeSearchCriteria criteria) {
-        //TODO Food for thought - Open-Closed principle violation?
+    public List<Employee> search(@NotNull EmployeeSearchCriteria criteria) {
         if (criteria.isComplexSearch()) {
             return employeeRepository.find(criteria);
         } else if (criteria.hasDepartmentCode()) {
