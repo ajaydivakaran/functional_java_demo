@@ -1,16 +1,42 @@
 package me.spike.domain.model;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class Either<TLeft, TRight> {
-    public abstract <TNewLeft> Either<TNewLeft, TRight> mapLeft(Function<TLeft, TNewLeft> map);
+public class Either<D> {
+    private final Error error;
+    private final D data;
 
-    public abstract <TNewRight> Either<TLeft, TNewRight> mapRight(Function<TRight, TNewRight> map);
+    public Either(D data) {
+        this.error = null;
+        this.data = data;
+    }
 
-    public abstract TLeft reduce(Function<TRight, TLeft> map);
+    public Either(Error error) {
+        this.error = error;
+        this.data = null;
+    }
 
-    public abstract Optional<TLeft> getLeft();
-    public abstract Optional<TRight> getRight();
+    public D getData() {
+        return data;
+    }
+
+    public void execute(Consumer<D> onData, Consumer<Error> onError) {
+        this.map(data -> {
+            onData.accept(data);
+            return null;
+        }, errors -> {
+            onError.accept(errors);
+            return null;
+        });
+    }
+
+    public <T> T map(Function<D, T> onData, Function<Error, T> onError) {
+        if(data != null) {
+            return onData.apply(data);
+        } else {
+            return onError.apply(error);
+        }
+    }
 
 }

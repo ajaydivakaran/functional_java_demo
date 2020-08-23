@@ -47,8 +47,7 @@ public class EmployeeDto {
                 .setName(name)
                 .setDepartmentCode(departmentCode)
                 .tryBuild()
-                .getRight()
-                .get();
+                .getData();
     }
 
     public void setId(String id) {

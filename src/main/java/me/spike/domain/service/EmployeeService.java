@@ -24,16 +24,16 @@ public class EmployeeService {
         this.departmentRepository = departmentRepository;
     }
 
-    public Either<Error, Registration> register(@NotNull Employee employee) {
+    public Either<Registration> register(@NotNull Employee employee) {
         final Optional<Department> maybeDepartment = departmentRepository.find(employee.getDepartmentCode());
         return maybeDepartment
                 .map(department -> onValidDepartment(employee))
-                .orElse(new Left<>(INVALID_DEPARTMENT));
+                .orElse(new Either<>(INVALID_DEPARTMENT));
     }
 
-    private Either<Error, Registration> onValidDepartment(Employee employee) {
+    private Either<Registration> onValidDepartment(Employee employee) {
         final String newEmployeeId = employeeRepository.save(employee);
-        return new Right<>(new Registration(newEmployeeId));
+        return new Either<>(new Registration(newEmployeeId));
     }
 
     public List<Employee> search(@NotNull EmployeeSearchCriteria criteria) {

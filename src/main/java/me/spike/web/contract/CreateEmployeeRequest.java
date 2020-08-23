@@ -2,13 +2,12 @@ package me.spike.web.contract;
 
 import me.spike.domain.model.Either;
 import me.spike.domain.model.Employee;
-import me.spike.domain.model.Error;
 
 public class CreateEmployeeRequest {
     private String name;
     private String departmentCode;
 
-    public Either<Error, Employee> toEmployee() {
+    public Either<Employee> toEmployee() {
         return new Employee.Builder()
                 .setName(name)
                 .setDepartmentCode(departmentCode)

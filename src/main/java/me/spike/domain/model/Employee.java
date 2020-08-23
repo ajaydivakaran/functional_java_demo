@@ -33,10 +33,10 @@ public class Employee {
             return this;
         }
 
-        public Either<Error, Employee> tryBuild() {
+        public Either<Employee> tryBuild() {
             if(invalid())
-                return new Left<>(INVALID_NEW_EMPLOYEE);
-            return new Right<>(employee);
+                return new Either(INVALID_NEW_EMPLOYEE);
+            return new Either(employee);
         }
 
         private boolean invalid() {

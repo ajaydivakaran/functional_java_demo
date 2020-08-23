@@ -44,10 +44,10 @@ public class EmployeeSearchCriteria {
             return this;
         }
 
-        public Either<Error, EmployeeSearchCriteria> tryBuild() {
+        public Either<EmployeeSearchCriteria> tryBuild() {
             if(isInvalid())
-                return new Left<>(INVALID_CRITERIA);
-            return new Right<>(criteria);
+                return new Either<>(INVALID_CRITERIA);
+            return new Either<>(criteria);
         }
 
         private boolean isInvalid() {

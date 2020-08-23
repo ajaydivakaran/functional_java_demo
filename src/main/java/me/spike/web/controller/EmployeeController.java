@@ -22,21 +22,17 @@ public class EmployeeController {
 
     @PostMapping("/employee")
     public ResponseEntity<CreateEmployeeResponse> create(@RequestBody CreateEmployeeRequest employeeRequest) {
-        final Either<Error, Employee> maybeEmployee = employeeRequest.toEmployee();
+        final Either<Employee> maybeEmployee = employeeRequest.toEmployee();
         return maybeEmployee
-                .mapRight(this::onValidEmployee)
-                .mapLeft(this::onInvalidNewEmployee)
-                .reduce(response -> response);
+                .map(this::onValidEmployee, this::onInvalidNewEmployee);
     }
 
     @GetMapping("/employees")
     public ResponseEntity<EmployeeSearchResponse> find(@RequestParam(required = false) String departmentCode,
                                                        @RequestParam(required = false) String name) {
-        final Either<Error, EmployeeSearchCriteria> maybeSearchCriteria = toSearchCriteria(departmentCode, name);
+        final Either<EmployeeSearchCriteria> maybeSearchCriteria = toSearchCriteria(departmentCode, name);
         return maybeSearchCriteria
-                .mapRight(this::onValidCriteria)
-                .mapLeft(this::onInvalidCriteria)
-                .reduce(response -> response);
+                .map(this::onValidCriteria, this::onInvalidCriteria);
     }
 
     private ResponseEntity<EmployeeSearchResponse> onInvalidCriteria(Error error) {
@@ -51,7 +47,7 @@ public class EmployeeController {
                 .ok(new EmployeeSearchResponse(employees));
     }
 
-    private Either<Error, EmployeeSearchCriteria> toSearchCriteria(String departmentCode,
+    private Either<EmployeeSearchCriteria> toSearchCriteria(String departmentCode,
                                                                    String name) {
         return new EmployeeSearchCriteria.Builder()
                 .setDepartmentCode(departmentCode)
@@ -60,11 +56,9 @@ public class EmployeeController {
     }
 
     private ResponseEntity<CreateEmployeeResponse> onValidEmployee(Employee employee) {
-        final Either<Error, Registration> maybeRegistration = service.register(employee);
+        final Either<Registration> maybeRegistration = service.register(employee);
         return maybeRegistration
-                .mapRight(this::onRegistrationSuccess)
-                .mapLeft(this::onInvalidNewEmployee)
-                .reduce(response -> response);
+                .map(this::onRegistrationSuccess, this::onInvalidNewEmployee);
     }
 
     private ResponseEntity<CreateEmployeeResponse> onRegistrationSuccess(Registration registration) {
