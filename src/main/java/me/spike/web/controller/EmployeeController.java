@@ -47,8 +47,7 @@ public class EmployeeController {
                 .ok(new EmployeeSearchResponse(employees));
     }
 
-    private Either<EmployeeSearchCriteria> toSearchCriteria(String departmentCode,
-                                                                   String name) {
+    private Either<EmployeeSearchCriteria> toSearchCriteria(String departmentCode, String name) {
         return new EmployeeSearchCriteria.Builder()
                 .setDepartmentCode(departmentCode)
                 .setName(name)
