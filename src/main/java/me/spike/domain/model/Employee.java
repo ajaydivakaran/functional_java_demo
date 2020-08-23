@@ -1,7 +1,6 @@
 package me.spike.domain.model;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class Employee {
 

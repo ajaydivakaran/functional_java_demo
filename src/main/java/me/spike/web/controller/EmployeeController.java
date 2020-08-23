@@ -25,7 +25,7 @@ public class EmployeeController {
         final Either<Error, Employee> maybeEmployee = employeeRequest.toEmployee();
         return maybeEmployee
                 .mapRight(this::onValidEmployee)
-                .mapLeft(this::onErrorEmployee)
+                .mapLeft(this::onInvalidNewEmployee)
                 .reduce(response -> response);
     }
 
@@ -63,7 +63,7 @@ public class EmployeeController {
         final Either<Error, Registration> maybeRegistration = service.register(employee);
         return maybeRegistration
                 .mapRight(this::onValidEmployee)
-                .mapLeft(this::onErrorEmployee)
+                .mapLeft(this::onInvalidNewEmployee)
                 .reduce(response -> response);
     }
 
@@ -74,7 +74,7 @@ public class EmployeeController {
                 .body(response);
     }
 
-    private ResponseEntity<CreateEmployeeResponse> onErrorEmployee(Error error) {
+    private ResponseEntity<CreateEmployeeResponse> onInvalidNewEmployee(Error error) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(new CreateEmployeeResponse(error));

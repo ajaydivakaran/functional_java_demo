@@ -1,13 +1,12 @@
 package me.spike.domain.service;
 
 import lombok.NonNull;
-import me.spike.domain.model.*;
 import me.spike.domain.model.Error;
+import me.spike.domain.model.*;
 import me.spike.persistence.DepartmentRepository;
 import me.spike.persistence.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +31,12 @@ public class EmployeeService {
                 .orElse(new Left<>(INVALID_DEPARTMENT));
     }
 
+    private Either<Error, Registration> onValidDepartment(Employee employee) {
+        final String newEmployeeId = employeeRepository.save(employee);
+        return new Right<>(new Registration(newEmployeeId));
+    }
+
+
     public List<Employee> search(@NonNull EmployeeSearchCriteria criteria) {
         //TODO Food for thought - Open-Closed principle violation?
         if (criteria.isComplexSearch()) {
@@ -43,8 +48,4 @@ public class EmployeeService {
         }
     }
 
-    private Either<Error, Registration> onValidDepartment(@NonNull Employee employee) {
-        final String employeeId = employeeRepository.save(employee);
-        return new Right<>(new Registration(employeeId));
-    }
 }
