@@ -1,6 +1,5 @@
 ## Demo Java code 
-* Constructing valid models without the use of exceptions.
-* Control flow without exceptions
+### Constructing valid models without the use of exceptions.
 
 
 #### References
